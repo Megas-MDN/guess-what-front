@@ -2,18 +2,29 @@ import { Stack, TextField } from "@mui/material";
 import { Screen } from "../../components/Screen";
 import { Btn } from "../../components/Btn";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useUserStore } from "../../Stores/useUserStore";
+import { useGameStateRoom } from "../../Stores/useGameRoomState";
+import { useUser } from "../../hooks/useUser";
 
 export const Create = () => {
-  const [name, setName] = useState("");
+  const { userName: name, setUserName: setName, setTeam } = useUserStore();
+  const { isLoading, createUserAndGame } = useUser();
+  const { roomId } = useGameStateRoom();
   const navgate = useNavigate();
 
-  const hadleClick = (team: 1 | 2) => {
+  const hadleClick = async (team: 1 | 2) => {
+    setTeam(team);
     console.log(team);
-    navgate("/game");
+    if (!roomId) {
+      const res = await createUserAndGame();
+      if (res) {
+        return navgate("/game");
+      }
+    }
+    navgate("/");
   };
   return (
-    <Screen>
+    <Screen isLoading={isLoading}>
       <Stack
         sx={{
           alignItems: "center",

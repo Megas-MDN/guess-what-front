@@ -22,7 +22,6 @@ export const useGame = () => {
     }
     setGameRoomList(res.data?.result);
     setTotalCount(res.data?.totalCount);
-    toast.success("Pegou");
     return res.data;
   };
   return { fetchGameRooms, isLoading };

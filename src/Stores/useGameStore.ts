@@ -20,6 +20,7 @@ interface IGameStore extends IINIT_STATE {
   setPage: (page: number) => void;
   setLimit: (limit: number) => void;
   setTotalCount: (totalCount: number) => void;
+  reset(): void;
 }
 
 export const useGameStore = create<IGameStore>((set) => ({
@@ -29,4 +30,5 @@ export const useGameStore = create<IGameStore>((set) => ({
   setPage: (page: number) => set(() => ({ page })),
   setLimit: (limit: number) => set(() => ({ limit })),
   setTotalCount: (totalCount: number) => set(() => ({ totalCount })),
+  reset: () => set(INIT_STATE),
 }));

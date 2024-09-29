@@ -2,6 +2,7 @@ export type TGameStatus = "WAITING" | "IN PROGRESS" | "FINISHED";
 
 export interface IUser {
   username: string;
+  socketId: string;
   _id: string;
 }
 export interface IGameCardProps {
