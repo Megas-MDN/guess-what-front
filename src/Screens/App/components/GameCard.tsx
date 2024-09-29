@@ -4,19 +4,7 @@ import { Text } from "../../../components/Text";
 import { TagStatus } from "../../../components/TagStatus";
 import { TeamLabel } from "./TeamLabel";
 import { useNavigate } from "react-router-dom";
-
-export type GameStatus = "WAITING" | "IN PROGRESS" | "FINISHED";
-
-export interface IGameCardProps {
-  status: "WAITING" | "IN PROGRESS" | "FINISHED";
-  round: number;
-  team01: number;
-  team02: number;
-  roomId: string;
-  whoWins?: 1 | 2 | null;
-  roundWinner?: number | null;
-  roundLoser?: number | null;
-}
+import { IGameCardProps } from "../../../types";
 
 export const GameCard = ({
   status,
@@ -29,7 +17,7 @@ export const GameCard = ({
   roundLoser,
 }: IGameCardProps) => {
   const navigate = useNavigate();
-  const full = Boolean(team01 === 4 && team02 === 4);
+  const full = Boolean(team01.length === 4 && team02.length === 4);
   const oneNum =
     status === "FINISHED" ? (whoWins === 1 ? roundWinner : roundLoser) : null;
   const twoNum =
@@ -72,7 +60,7 @@ export const GameCard = ({
             <TagStatus
               status={
                 status === "IN PROGRESS"
-                  ? team01 === 4 && team02 === 4
+                  ? team01.length === 4 && team02.length === 4
                     ? "FULL"
                     : status
                   : status
@@ -98,13 +86,13 @@ export const GameCard = ({
         >
           <TeamLabel
             isFinished={Boolean(status === "FINISHED")}
-            number={oneNum ?? team01}
+            number={oneNum ?? team01.length}
             team={1}
             isWinner={Boolean(whoWins === 1)}
           />
           <TeamLabel
             isFinished={Boolean(status === "FINISHED")}
-            number={twoNum ?? team02}
+            number={twoNum ?? team02.length}
             team={2}
             isWinner={Boolean(whoWins === 2)}
           />

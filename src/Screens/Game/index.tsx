@@ -2,15 +2,15 @@ import { Stack } from "@mui/material";
 import { Btn } from "../../components/Btn";
 import { Screen } from "../../components/Screen";
 import { Text } from "../../components/Text";
-import { GameStatus } from "../App/components/GameCard";
 import { Header } from "./components/Header";
 import { useNavigate } from "react-router-dom";
 import { GameContainer } from "./components/GameContainer";
+import { TGameStatus } from "../../types";
 
 export const Game = () => {
   const navigate = useNavigate();
   const already = false;
-  const status: GameStatus = "IN PROGRESS";
+  const status = ["WAITING", "IN PROGRESS", "FINISHED"][0] as TGameStatus;
   const whoWins: 1 | 2 | null = 1;
   const round = 1;
   const word = "Hello";
