@@ -7,10 +7,16 @@ import { useGameStateRoom } from "../Stores/useGameRoomState";
 
 export const useUser = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { userName, team, setUser } = useUserStore();
+  const { setUser } = useUserStore();
   const { setRoomId, setUsersList, setRound, setStatus } = useGameStateRoom();
 
-  const createUserAndGame = async () => {
+  const createUserAndGame = async ({
+    userName,
+    team,
+  }: {
+    userName: string;
+    team: 1 | 2;
+  }) => {
     setIsLoading(true);
     const res = await api.post<{
       user: IUser;

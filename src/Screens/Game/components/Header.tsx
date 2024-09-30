@@ -3,9 +3,7 @@ import { Text } from "../../../components/Text";
 import { TagStatus } from "../../../components/TagStatus";
 import { Btn } from "../../../components/Btn";
 import { useNavigate } from "react-router-dom";
-import { useGameStateRoom } from "../../../Stores/useGameRoomState";
-import { useGameStore } from "../../../Stores/useGameStore";
-import { useUserStore } from "../../../Stores/useUserStore";
+import { useResetAll } from "../../../hooks/useResetAll";
 
 interface Props {
   usersList: {
@@ -20,14 +18,10 @@ interface Props {
 }
 
 export const Header = ({ usersList, round, status }: Props) => {
-  const { reset: resetGame } = useGameStore();
-  const { reset: resetGameRoom } = useGameStateRoom();
-  const { reset: resetUser } = useUserStore();
+  const reset = useResetAll();
   const navigate = useNavigate();
   const handleExit = () => {
-    resetGame();
-    resetGameRoom();
-    resetUser();
+    reset();
     navigate("/");
   };
   return (

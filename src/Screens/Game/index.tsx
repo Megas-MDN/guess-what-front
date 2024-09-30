@@ -12,7 +12,7 @@ import { useEffect } from "react";
 
 export const Game = () => {
   const navigate = useNavigate();
-  const { roomId } = useGameStateRoom();
+  const { roomId, usersList } = useGameStateRoom();
   const { isLoading, fetchGameRoom } = useGameRoom();
   const already = false;
   const status = ["WAITING", "IN PROGRESS", "FINISHED"][0] as TGameStatus;
@@ -20,28 +20,29 @@ export const Game = () => {
   const round = 1;
   const word = "Hello";
   const isWordDiller = false;
-  const usersList = {
-    team01: [
-      "fulano silva def  fd df d dfdd",
-      "fulano silva",
-      "fulano silva",
-      "fulano silva",
-    ],
-    team02: [
-      "fulano silva ef dd fdfd wdf wdef 3we wd ",
-      "fulano silva",
-      "fulano silva",
-      "fulano silva",
-    ],
-    userTeam: 2 as 1 | 2,
-    team01Score: 0,
-    team02Score: 0,
-  };
+  // const usersList = {
+  //   team01: [
+  //     "fulano silva def  fd df d dfdd",
+  //     "fulano silva",
+  //     "fulano silva",
+  //     "fulano silva",
+  //   ],
+  //   team02: [
+  //     "fulano silva ef dd fdfd wdf wdef 3we wd ",
+  //     "fulano silva",
+  //     "fulano silva",
+  //     "fulano silva",
+  //   ],
+  //   userTeam: 2 as 1 | 2,
+  //   team01Score: 0,
+  //   team02Score: 0,
+  // };
 
   const onSend = () => {};
   const onSendDescription = () => {};
 
   useEffect(() => {
+    console.log(roomId, "roomId");
     fetchGameRoom(roomId);
   }, [roomId]);
 

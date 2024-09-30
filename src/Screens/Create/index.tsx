@@ -6,6 +6,7 @@ import { useUserStore } from "../../Stores/useUserStore";
 import { useGameStateRoom } from "../../Stores/useGameRoomState";
 import { useUser } from "../../hooks/useUser";
 import { useGameRoom } from "../../hooks/useGameRoom";
+import { useResetAll } from "../../hooks/useResetAll";
 
 export const Create = () => {
   const { userName: name, setUserName: setName, setTeam } = useUserStore();
@@ -13,18 +14,21 @@ export const Create = () => {
   const { roomId } = useGameStateRoom();
   const { joinRoom } = useGameRoom();
   const navgate = useNavigate();
+  const reset = useResetAll();
 
   const hadleClick = async (team: 1 | 2) => {
     setTeam(team);
     if (!roomId) {
-      const res = await createUserAndGame();
+      const res = await createUserAndGame({ userName: name, team });
       if (!res) {
+        reset();
         return navgate("/");
       }
       return navgate("/game");
     }
     const res = await joinRoom({ userName: name, team, roomId });
     if (!res) {
+      reset();
       return navgate("/");
     }
     return navgate("/game");

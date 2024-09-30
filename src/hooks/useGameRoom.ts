@@ -3,10 +3,12 @@ import { api } from "../services/api";
 import { toast } from "react-toastify";
 import { useGameStateRoom } from "../Stores/useGameRoomState";
 import { IUser, TGameStatus } from "../types";
+import { useUserStore } from "../Stores/useUserStore";
 
 export const useGameRoom = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { setRound, setStatus, setUsersList, usersList } = useGameStateRoom();
+  const { setRound, setStatus, setUsersList } = useGameStateRoom();
+  const { team } = useUserStore();
 
   const fetchGameRoom = async (roomId: string | null) => {
     if (!roomId) return null;
@@ -18,7 +20,6 @@ export const useGameRoom = () => {
     }>({
       url: `/game/${roomId}`,
     });
-    console.log(res.data, "<<< fetchGameRoom");
     setIsLoading(false);
     if (res.error) {
       toast.error(res.message);
@@ -27,7 +28,7 @@ export const useGameRoom = () => {
     setRound(res.data?.round);
     setStatus(res.data?.status);
     setUsersList({
-      ...usersList,
+      userTeam: team || 2,
       team01: res.data?.team01.map((user) => user.username) || [],
       team02: res.data?.team02.map((user) => user.username) || [],
       team01Score: 0,
