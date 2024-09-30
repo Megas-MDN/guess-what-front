@@ -6,9 +6,14 @@ import { Header } from "./components/Header";
 import { useNavigate } from "react-router-dom";
 import { GameContainer } from "./components/GameContainer";
 import { TGameStatus } from "../../types";
+import { useGameStateRoom } from "../../Stores/useGameRoomState";
+import { useGameRoom } from "../../hooks/useGameRoom";
+import { useEffect } from "react";
 
 export const Game = () => {
   const navigate = useNavigate();
+  const { roomId } = useGameStateRoom();
+  const { isLoading, fetchGameRoom } = useGameRoom();
   const already = false;
   const status = ["WAITING", "IN PROGRESS", "FINISHED"][0] as TGameStatus;
   const whoWins: 1 | 2 | null = 1;
@@ -36,12 +41,15 @@ export const Game = () => {
   const onSend = () => {};
   const onSendDescription = () => {};
 
+  useEffect(() => {
+    fetchGameRoom(roomId);
+  }, [roomId]);
+
   return (
-    <Screen>
+    <Screen isLoading={isLoading}>
       <Header round={round} status={status} usersList={usersList} />
       {status === "WAITING" && (
         <Stack
-          className="bb"
           sx={{
             flex: 1,
             justifyContent: "center",

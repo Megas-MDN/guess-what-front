@@ -10,7 +10,6 @@ export const DecriptionWorField = ({
   const [description, setDescription] = useState("");
 
   const hadleClick = () => {
-    console.log(description);
     onClick(description);
     setDescription("");
   };

@@ -1,4 +1,4 @@
-import axios, { AxiosHeaders } from "axios";
+import axios, { AxiosError, AxiosHeaders } from "axios";
 
 export interface IResponse<T> {
   message: string;
@@ -38,8 +38,8 @@ const app = async <T>({
     return { data: response.data, error: false, err: null, message: "" };
   } catch (error) {
     let message = "Unknown error";
-    if (error instanceof Error) {
-      message = error.message;
+    if (error instanceof AxiosError) {
+      message = error?.response?.data?.message || error.message;
     }
     return { message, error: true, err: error, data: [] as T };
   }
@@ -53,7 +53,7 @@ const remove = async <T>({ url = "", data = {}, auth = {} }) =>
   app<T>({ method: "DELETE", url, data, auth });
 
 const put = async <T>({ url = "", data = {}, auth = {} }) => {
-  return <T>app({
+  return app<T>({
     method: "PUT",
     url,
     data,

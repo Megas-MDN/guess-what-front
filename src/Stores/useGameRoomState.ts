@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { TGameStatus } from "../types";
+import { middlewareLocalStorage } from "./middlewareLocalStorage";
 
 interface IINIT_STATE {
   roomId: string | null;
@@ -49,17 +50,21 @@ interface IGameRoomStore extends IINIT_STATE {
   reset: () => void;
 }
 
-export const useGameStateRoom = create<IGameRoomStore>((set) => ({
-  ...INIT_STATE,
-  setRoomId: (roomId) => set({ roomId }),
-  setWord: (word) => set({ word }),
-  setIsWordDiller: (isWordDiller) => set({ isWordDiller }),
-  setUsersList: (usersList) => set({ usersList }),
-  setTeam01Score: (team01Score) =>
-    set((state) => ({ usersList: { ...state.usersList, team01Score } })),
-  setTeam02Score: (team02Score) =>
-    set((state) => ({ usersList: { ...state.usersList, team02Score } })),
-  setRound: (round) => set({ round }),
-  setStatus: (status) => set({ status }),
-  reset: () => set(INIT_STATE),
-}));
+const middle = middlewareLocalStorage<IGameRoomStore>("gameRoom");
+
+export const useGameStateRoom = create<IGameRoomStore>()(
+  middle((set) => ({
+    ...INIT_STATE,
+    setRoomId: (roomId) => set({ roomId }),
+    setWord: (word) => set({ word }),
+    setIsWordDiller: (isWordDiller) => set({ isWordDiller }),
+    setUsersList: (usersList) => set({ usersList }),
+    setTeam01Score: (team01Score) =>
+      set((state) => ({ usersList: { ...state.usersList, team01Score } })),
+    setTeam02Score: (team02Score) =>
+      set((state) => ({ usersList: { ...state.usersList, team02Score } })),
+    setRound: (round) => set({ round }),
+    setStatus: (status) => set({ status }),
+    reset: () => set(INIT_STATE),
+  })),
+);

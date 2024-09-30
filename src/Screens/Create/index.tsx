@@ -5,23 +5,29 @@ import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../Stores/useUserStore";
 import { useGameStateRoom } from "../../Stores/useGameRoomState";
 import { useUser } from "../../hooks/useUser";
+import { useGameRoom } from "../../hooks/useGameRoom";
 
 export const Create = () => {
   const { userName: name, setUserName: setName, setTeam } = useUserStore();
   const { isLoading, createUserAndGame } = useUser();
   const { roomId } = useGameStateRoom();
+  const { joinRoom } = useGameRoom();
   const navgate = useNavigate();
 
   const hadleClick = async (team: 1 | 2) => {
     setTeam(team);
-    console.log(team);
     if (!roomId) {
       const res = await createUserAndGame();
-      if (res) {
-        return navgate("/game");
+      if (!res) {
+        return navgate("/");
       }
+      return navgate("/game");
     }
-    navgate("/");
+    const res = await joinRoom({ userName: name, team, roomId });
+    if (!res) {
+      return navgate("/");
+    }
+    return navgate("/game");
   };
   return (
     <Screen isLoading={isLoading}>

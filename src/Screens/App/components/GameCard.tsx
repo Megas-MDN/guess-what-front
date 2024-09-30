@@ -5,6 +5,7 @@ import { TagStatus } from "../../../components/TagStatus";
 import { TeamLabel } from "./TeamLabel";
 import { useNavigate } from "react-router-dom";
 import { IGameCardProps } from "../../../types";
+import { useGameStateRoom } from "../../../Stores/useGameRoomState";
 
 export const GameCard = ({
   status,
@@ -17,6 +18,7 @@ export const GameCard = ({
   roundLoser,
 }: IGameCardProps) => {
   const navigate = useNavigate();
+  const { setRoomId } = useGameStateRoom();
   const full = Boolean(team01.length === 4 && team02.length === 4);
   const oneNum =
     status === "FINISHED" ? (whoWins === 1 ? roundWinner : roundLoser) : null;
@@ -24,7 +26,7 @@ export const GameCard = ({
     status === "FINISHED" ? (whoWins === 2 ? roundWinner : roundLoser) : null;
 
   const handleClick = () => {
-    console.log(roomId);
+    setRoomId(roomId);
     navigate(`/create`);
   };
   return (

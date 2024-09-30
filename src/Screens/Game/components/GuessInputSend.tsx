@@ -10,7 +10,6 @@ export const GuessInputSend = ({
   const [word, setWord] = useState("");
 
   const hadleClick = () => {
-    console.log(word);
     onClick(word);
     setWord("");
   };

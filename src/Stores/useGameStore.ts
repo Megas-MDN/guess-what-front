@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { IGameCardProps } from "../types";
+import { middlewareLocalStorage } from "./middlewareLocalStorage";
 
 interface IINIT_STATE {
   gameRoomList: IGameCardProps[];
@@ -23,12 +24,16 @@ interface IGameStore extends IINIT_STATE {
   reset(): void;
 }
 
-export const useGameStore = create<IGameStore>((set) => ({
-  ...INIT_STATE,
-  setGameRoomList: (gameRoomList: IGameCardProps[]) =>
-    set(() => ({ gameRoomList })),
-  setPage: (page: number) => set(() => ({ page })),
-  setLimit: (limit: number) => set(() => ({ limit })),
-  setTotalCount: (totalCount: number) => set(() => ({ totalCount })),
-  reset: () => set(INIT_STATE),
-}));
+const middle = middlewareLocalStorage<IGameStore>("game");
+
+export const useGameStore = create<IGameStore>()(
+  middle((set) => ({
+    ...INIT_STATE,
+    setGameRoomList: (gameRoomList: IGameCardProps[]) =>
+      set(() => ({ gameRoomList })),
+    setPage: (page: number) => set(() => ({ page })),
+    setLimit: (limit: number) => set(() => ({ limit })),
+    setTotalCount: (totalCount: number) => set(() => ({ totalCount })),
+    reset: () => set(INIT_STATE),
+  })),
+);

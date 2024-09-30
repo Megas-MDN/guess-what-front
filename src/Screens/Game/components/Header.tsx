@@ -87,8 +87,9 @@ export const Header = ({ usersList, round, status }: Props) => {
           >{`${usersList.userTeam === 1 ? "*" : ""}Team 01: ${
             usersList.team01Score
           }`}</Text>
-          {usersList.team01.map((user) => (
+          {usersList.team01.map((user, index) => (
             <Text
+              key={index + user}
               sx={{
                 whiteSpace: "nowrap",
                 overflow: "hidden",
@@ -110,8 +111,9 @@ export const Header = ({ usersList, round, status }: Props) => {
           >{`${usersList.userTeam === 2 ? "*" : ""}Team 02: ${
             usersList.team02Score
           } `}</Text>
-          {usersList.team02.map((user) => (
+          {usersList.team02.map((user, index) => (
             <Text
+              key={user + index}
               sx={{
                 whiteSpace: "nowrap",
                 overflow: "hidden",
