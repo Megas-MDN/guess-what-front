@@ -59,9 +59,29 @@ export const useGameRoom = () => {
     return res.data;
   };
 
+  const startGame = async (roomId: string | null) => {
+    if (!roomId) return null;
+    setIsLoading(true);
+    const res = await api.put<{ status: TGameStatus }>({
+      url: `/game/start/${roomId}`,
+    });
+    setIsLoading(false);
+    if (res.error) {
+      toast.error(res.message);
+      return null;
+    }
+    if (!res.data?.status) {
+      setStatus("IN PROGRESS");
+    } else {
+      setStatus(res.data?.status);
+    }
+    return res.data;
+  };
+
   return {
     isLoading,
     joinRoom,
     fetchGameRoom,
+    startGame,
   };
 };

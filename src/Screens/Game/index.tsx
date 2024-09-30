@@ -5,41 +5,31 @@ import { Text } from "../../components/Text";
 import { Header } from "./components/Header";
 import { useNavigate } from "react-router-dom";
 import { GameContainer } from "./components/GameContainer";
-import { TGameStatus } from "../../types";
 import { useGameStateRoom } from "../../Stores/useGameRoomState";
 import { useGameRoom } from "../../hooks/useGameRoom";
 import { useEffect } from "react";
 
 export const Game = () => {
   const navigate = useNavigate();
-  const { roomId, usersList } = useGameStateRoom();
-  const { isLoading, fetchGameRoom } = useGameRoom();
-  const already = false;
-  const status = ["WAITING", "IN PROGRESS", "FINISHED"][0] as TGameStatus;
+  const { roomId, usersList, status } = useGameStateRoom();
+  const { isLoading, fetchGameRoom, startGame } = useGameRoom();
+  const already =
+    status === "WAITING" &&
+    usersList.team01.length > 1 &&
+    usersList.team02.length > 1;
   const whoWins: 1 | 2 | null = 1;
   const round = 1;
   const word = "Hello";
   const isWordDiller = false;
-  // const usersList = {
-  //   team01: [
-  //     "fulano silva def  fd df d dfdd",
-  //     "fulano silva",
-  //     "fulano silva",
-  //     "fulano silva",
-  //   ],
-  //   team02: [
-  //     "fulano silva ef dd fdfd wdf wdef 3we wd ",
-  //     "fulano silva",
-  //     "fulano silva",
-  //     "fulano silva",
-  //   ],
-  //   userTeam: 2 as 1 | 2,
-  //   team01Score: 0,
-  //   team02Score: 0,
-  // };
 
   const onSend = () => {};
   const onSendDescription = () => {};
+  const handleClickStartGame = async () => {
+    const res = await startGame(roomId);
+    if (!res) {
+      return;
+    }
+  };
 
   useEffect(() => {
     console.log(roomId, "roomId");
@@ -58,6 +48,7 @@ export const Game = () => {
           }}
         >
           <Btn
+            onClick={handleClickStartGame}
             disabled={!already}
             sx={{
               padding: "10px",
